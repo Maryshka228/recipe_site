@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Кухня шедевров{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav>
+    <a href="{% url 'home' %}" class="logo">
+      <i class="fas fa-utensils"></i> Кухня шедевров
+    </a>
+    <div class="nav-links">
+      {% if request.path != '/' %}
+        <a href="{% url 'home' %}" class="nav-link"><i class="fas fa-home"></i> Главная</a>
+      {% endif %}
+      {% if user.is_authenticated %}
+        {% if not '/add/' in request.path %}
+          <a href="{% url 'add_recipe' %}" class="nav-link"><i class="fas fa-plus-circle"></i> Добавить рецепт</a>
+        {% endif %}
+        <form action="{% url 'logout' %}" method="post" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn-logout">
+            <i class="fas fa-sign-out-alt"></i> Выйти
+          </button>
+        </form>
+      {% else %}
+        <a href="{% url 'login' %}" class="nav-link"><i class="fas fa-sign-in-alt"></i> Войти</a>
+        <a href="{% url 'register' %}" class="nav-link"><i class="fas fa-user-plus"></i> Регистрация</a>
+      {% endif %}
+    </div>
+  </nav>
+
+  <main>
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p style="color: var(--text); opacity: 0.7; text-align: center;">Кухня шедевров — ваш сборник лучших рецептов</p>
+  </footer>
+</body>
+</html>

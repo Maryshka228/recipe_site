@@ -1,0 +1,62 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Кулинарная коллекция</h1>
+  </div>
+
+  {% if user.is_authenticated %}
+  <div style="text-align: center; margin-bottom: 2rem;">
+    <a href="{% url 'add_recipe' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Добавить рецепт
+    </a>
+  </div>
+  {% endif %}
+
+  {% if recipes %}
+  <div class="recipe-grid">
+    {% for recipe in recipes %}
+    <div class="recipe-card">
+      <div class="recipe-img-container">
+        {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-img">
+        {% else %}
+        <div style="width: 100%; height: 100%; background: var(--light-gray); display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-camera" style="font-size: 2rem; color: var(--text); opacity: 0.3;"></i>
+        </div>
+        {% endif %}
+      </div>
+      <div class="recipe-content">
+        <h2 class="recipe-title">{{ recipe.title }}</h2>
+        <p class="recipe-description">{{ recipe.description|truncatechars:120 }}</p>
+        <div class="recipe-meta">
+          <span><i class="fas fa-clock"></i> {{ recipe.cooking_time }} мин</span>
+          <span><i class="fas fa-user"></i> {{ recipe.author.username }}</span>
+        </div>
+        <a href="{% url 'recipe_detail' recipe.id %}" class="recipe-btn">
+          <i class="fas fa-book-open"></i> Открыть
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align: center; padding: 3rem; background: var(--card-bg); border-radius: 12px; box-shadow: var(--shadow);">
+    <div style="font-size: 5rem; color: var(--light-gray); margin-bottom: 1rem;">
+      <i class="fas fa-utensils"></i>
+    </div>
+    <h3 style="color: var(--text); margin-bottom: 1rem;">Рецептов пока нет</h3>
+    {% if user.is_authenticated %}
+    <a href="{% url 'add_recipe' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Добавить рецепт
+    </a>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-primary">
+      <i class="fas fa-sign-in-alt"></i> Войти
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
