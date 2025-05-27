@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 
@@ -22,7 +23,7 @@ SECRET_KEY = 'django-insecure-wud&+j6c96)s9@!+12m4yqgem188=6y!z!ai=tff2f&#jp#gm_
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['Maryshka22.pythonanywhere.com']
+ALLOWED_HOSTS = ['Maryshka22.pythonanywhere.com', '127.0.0.1']
 
 
 
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'recipe_site.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  # Убедитесь что файл существует
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
@@ -116,7 +117,7 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  
+STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
