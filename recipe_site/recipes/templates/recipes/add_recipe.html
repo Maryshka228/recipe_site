@@ -1,0 +1,53 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="add-recipe-form">
+    <h1 style="text-align: center; margin-bottom: 2rem;">Добавить новый рецепт</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      {% if form.errors %}
+      <div style="color: var(--danger); margin-bottom: 1.5rem;">
+        Пожалуйста, исправьте ошибки в форме.
+      </div>
+      {% endif %}
+      
+      <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Название рецепта</label>
+        {{ form.title }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">Описание</label>
+        {{ form.description }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.steps.id_for_label }}">Шаги приготовления</label>
+        {{ form.steps }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.cooking_time.id_for_label }}">Время приготовления (минут)</label>
+        {{ form.cooking_time }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.image.id_for_label }}">Изображение</label>
+        {{ form.image }}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.categories.id_for_label }}">Категории</label>
+        {{ form.categories }}
+      </div>
+      
+      <button type="submit" class="btn btn-success">
+        <i class="fas fa-save"></i> Сохранить рецепт
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
