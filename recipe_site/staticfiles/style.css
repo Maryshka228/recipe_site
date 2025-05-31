@@ -23,7 +23,7 @@ body {
   flex-direction: column;
 }
 
-/* Навигация */
+
 nav {
   background: var(--card-bg);
   padding: 1rem 2rem;
@@ -259,7 +259,7 @@ nav {
   border-bottom: 2px solid var(--light-gray);
 }
 
-/* Кнопки */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -316,7 +316,7 @@ nav {
   background: var(--primary-light);
 }
 
-/* Формы */
+
 .auth-form {
   max-width: 500px;
   margin: 0 auto;
@@ -366,7 +366,7 @@ nav {
   font-size: 1.1rem;
 }
 
-/* Футер */
+
 footer {
   background: var(--card-bg);
   padding: 1.5rem;
