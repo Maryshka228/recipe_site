@@ -12,7 +12,7 @@
   --success: #28a745;
 }
 
-/* Base Styles */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -44,7 +44,7 @@ img {
   height: auto;
 }
 
-/* Layout */
+
 .container {
   max-width: 1200px;
   margin: 2rem auto;
@@ -52,7 +52,7 @@ img {
   flex-grow: 1;
 }
 
-/* Navigation */
+
 nav {
   background: var(--card-bg);
   padding: 1rem 2rem;
@@ -121,7 +121,7 @@ nav {
   color: white;
 }
 
-/* Footer */
+
 footer {
   background: var(--card-bg);
   padding: 1.5rem;
@@ -152,7 +152,7 @@ footer {
   color: var(--primary);
 }
 
-/* Home Page */
+
 .page-header {
   text-align: center;
   margin-bottom: 2rem;
@@ -174,7 +174,7 @@ footer {
   margin-bottom: 2rem;
 }
 
-/* Category Filter */
+
 .category-filter {
   margin: 1.5rem 0;
   position: relative;
@@ -241,7 +241,7 @@ footer {
   color: white;
 }
 
-/* Recipe Grid */
+
 .recipe-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -344,7 +344,7 @@ footer {
   box-shadow: 0 4px 8px rgba(139, 164, 217, 0.3);
 }
 
-/* No Recipes */
+
 .no-recipes {
   text-align: center;
   padding: 3rem;
@@ -364,7 +364,7 @@ footer {
   margin-bottom: 1rem;
 }
 
-/* Buttons */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -419,7 +419,7 @@ footer {
   background: var(--primary-light);
 }
 
-/* Recipe Detail Page */
+
 .recipe-detail-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -561,7 +561,7 @@ footer {
   background: var(--primary-light);
 }
 
-/* Forms */
+
 .auth-form {
   max-width: 500px;
   margin: 0 auto;
@@ -611,7 +611,7 @@ footer {
   font-size: 1.1rem;
 }
 
-/* Responsive Styles */
+
 @media (max-width: 768px) {
   .container {
     margin: 1rem auto;
