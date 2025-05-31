@@ -110,7 +110,6 @@
     margin-bottom: 2rem;
   }
 
-  /* Обновленные стили для фильтра категорий */
   .category-filter {
     margin: 1.5rem 0;
     position: relative;
@@ -375,18 +374,18 @@
     const toggle = document.querySelector('.category-toggle');
     const menu = document.querySelector('.category-menu');
     
-    // Открытие/закрытие по клику
+  
     toggle.addEventListener('click', function(e) {
       e.stopPropagation();
       menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
     });
     
-    // Закрытие при клике вне меню
+  
     document.addEventListener('click', function() {
       menu.style.display = 'none';
     });
     
-    // Предотвращаем закрытие при клике внутри меню
+ 
     menu.addEventListener('click', function(e) {
       e.stopPropagation();
     });
