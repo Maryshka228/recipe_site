@@ -1,0 +1,67 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<style>
+  .auth-form .form-control {
+    width: 100%;
+    max-width: 430px;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .auth-form .form-text {
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+
+<div class="container">
+  <div class="auth-form">
+    <h1 style="text-align: center; margin-bottom: 2rem;"><i class="fas fa-user-plus"></i> Регистрация</h1>
+    
+    {% if errors %}
+    <div class="alert alert-danger" style="color: var(--danger); margin-bottom: 1.5rem; padding: 1rem; border-radius: 8px; background-color: #f8d7da;">
+      <h4 style="margin-top: 0;">Ошибки:</h4>
+      <ul style="margin-bottom: 0;">
+        {% for field, error_list in errors %}
+          {% for error in error_list %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+    
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="id_username">Имя пользователя</label>
+        <input type="text" name="username" id="id_username" class="form-control" required
+               value="{{ form.username.value|default_if_none:'' }}">
+        <small class="form-text text-muted">{{ form.username.help_text }}</small>
+      </div>
+      <div class="form-group">
+        <label for="id_password1">Пароль</label>
+        <input type="password" name="password1" id="id_password1" class="form-control" required>
+        <small class="form-text text-muted">{{ form.password1.help_text }}</small>
+      </div>
+      <div class="form-group">
+        <label for="id_password2">Подтверждение пароля</label>
+        <input type="password" name="password2" id="id_password2" class="form-control" required>
+        <small class="form-text text-muted">{{ form.password2.help_text }}</small>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width: 100%; max-width: 500px;">
+        <i class="fas fa-user-plus"></i> Зарегистрироваться
+      </button>
+    </form>
+    
+    <p style="text-align: center; margin-top: 1.5rem;">
+      Уже есть аккаунт? <a href="{% url 'login' %}" style="color: var(--primary);">Войдите</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

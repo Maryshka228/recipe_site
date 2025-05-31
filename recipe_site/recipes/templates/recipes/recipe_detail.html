@@ -1,0 +1,279 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="recipe-detail-wrapper">
+    <!-- Изображение рецепта -->
+    <div class="recipe-image-container">
+      {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-image">
+      {% else %}
+        <div class="recipe-image-placeholder">
+          <i class="fas fa-camera"></i>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Контент рецепта -->
+    <div class="recipe-content-wrapper">
+      <h1 class="recipe-title">{{ recipe.title }}</h1>
+
+      <div class="recipe-meta">
+        <span class="meta-item">
+          <i class="fas fa-clock meta-icon time-icon"></i> 
+          <span class="meta-text">{{ recipe.cooking_time }} мин</span>
+        </span>
+        <span class="meta-item">
+          <i class="fas fa-user meta-icon author-icon"></i> 
+          <span class="meta-text">{{ recipe.author.username }}</span>
+        </span>
+        {% if recipe.categories.all %}
+        <span class="meta-item">
+          <i class="fas fa-tags meta-icon category-icon"></i>
+          <span class="meta-text">
+            {% for category in recipe.categories.all %}
+              {{ category.name }}{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </span>
+        </span>
+        {% endif %}
+      </div>
+
+      <div class="recipe-section">
+        <h3 class="section-title">Описание</h3>
+        <p class="section-text">{{ recipe.description }}</p>
+      </div>
+
+      <div class="recipe-section">
+        <h3 class="section-title">Шаги приготовления</h3>
+        <div class="section-text steps-text">{{ recipe.steps }}</div>
+      </div>
+
+      {% if user == recipe.author %}
+      <div class="recipe-actions">
+        <a href="{% url 'edit_recipe' recipe.pk %}" class="btn btn-edit">
+          <i class="fas fa-edit"></i> Редактировать
+        </a>
+        <a href="{% url 'delete_recipe' recipe.pk %}" class="btn btn-delete">
+          <i class="fas fa-trash"></i> Удалить
+        </a>
+      </div>
+      {% endif %}
+
+      <a href="{% url 'home' %}" class="btn btn-back">
+        <i class="fas fa-arrow-left"></i> На главную
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Основные стили */
+  .recipe-detail-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .recipe-image-container {
+    border: 1px solid var(--light-gray);
+    padding: 8px;
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 1/1;
+    background: white;
+    position: sticky;
+    top: 1rem;
+  }
+
+  .recipe-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  .recipe-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--light-gray);
+    border-radius: 8px;
+    color: var(--text);
+    opacity: 0.3;
+  }
+
+  .recipe-content-wrapper {
+    padding: 1.5rem;
+  }
+
+  .recipe-title {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  .recipe-meta {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text);
+    opacity: 0.8;
+    font-size: 0.95rem;
+  }
+
+  .meta-icon {
+    font-size: 1rem;
+  }
+
+  .time-icon { color: var(--primary); }
+  .author-icon { color: var(--danger); }
+  .category-icon { color: var(--success); }
+
+  .recipe-section {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    color: var(--primary);
+    font-weight: 600;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--light-gray);
+  }
+
+  .section-text {
+    white-space: pre-line;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .steps-text {
+    padding-left: 0.5rem;
+  }
+
+  /* Кнопки */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .btn-edit {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-delete {
+    background: var(--danger);
+    color: white;
+  }
+
+  .btn-back {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    margin-top: 2rem;
+  }
+
+  .recipe-actions {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  /* Эффекты при наведении */
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .btn-edit:hover {
+    background: #2980b9;
+  }
+
+  .btn-delete:hover {
+    background: #c0392b;
+  }
+
+  .btn-back:hover {
+    background: var(--primary-light);
+  }
+
+  /* Мобильная адаптация */
+  @media (max-width: 768px) {
+    .recipe-detail-wrapper {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .recipe-image-container {
+      position: static;
+      aspect-ratio: 16/9;
+    }
+
+    .recipe-content-wrapper {
+      padding: 1rem;
+    }
+
+    .recipe-title {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .recipe-meta {
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+    }
+
+    .recipe-actions {
+      margin-top: 2rem;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .recipe-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .recipe-title {
+      font-size: 1.6rem;
+    }
+  }
+</style>
+{% endblock %}

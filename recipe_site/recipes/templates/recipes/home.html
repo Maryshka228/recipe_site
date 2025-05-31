@@ -1,0 +1,395 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<div class="container">
+  <div class="page-header">
+    <h1 class="page-title">Кулинарная коллекция</h1>
+  </div>
+
+  <!-- Фильтр по категориям -->
+  <div class="category-filter">
+    <div class="category-dropdown">
+      <button class="category-toggle">
+        {% if selected_category %}
+          {% for cat in categories %}
+            {% if cat.id == selected_category %}
+              {{ cat.name }}
+            {% endif %}
+          {% endfor %}
+        {% else %}
+          Все категории
+        {% endif %}
+        <i class="fas fa-chevron-down"></i>
+      </button>
+      <div class="category-menu">
+        <a href="?category=" class="category-item {% if not selected_category %}active{% endif %}">
+          Все категории
+        </a>
+        {% for category in categories %}
+          <a href="?category={{ category.id }}" class="category-item {% if category.id == selected_category %}active{% endif %}">
+            {{ category.name }}
+          </a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% if user.is_authenticated %}
+  <div class="add-recipe-btn">
+    <a href="{% url 'add_recipe' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Добавить рецепт
+    </a>
+  </div>
+  {% endif %}
+
+  {% if recipes %}
+  <div class="recipe-grid">
+    {% for recipe in recipes %}
+    <div class="recipe-card">
+      <div class="recipe-img-container">
+        {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}" class="recipe-img">
+        {% else %}
+        <div class="no-image">
+          <i class="fas fa-camera"></i>
+        </div>
+        {% endif %}
+      </div>
+      <div class="recipe-content">
+        <h2 class="recipe-title">{{ recipe.title }}</h2>
+        <p class="recipe-description">{{ recipe.description|truncatechars:120 }}</p>
+        <div class="recipe-meta">
+          <span><i class="fas fa-clock"></i> {{ recipe.cooking_time }} мин</span>
+          <span><i class="fas fa-user"></i> {{ recipe.author.username }}</span>
+        </div>
+        <a href="{% url 'recipe_detail' recipe.id %}" class="recipe-btn">
+          <i class="fas fa-book-open"></i> Открыть
+        </a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="no-recipes">
+    <div class="no-recipes-icon">
+      <i class="fas fa-utensils"></i>
+    </div>
+    <h3>Рецептов пока нет</h3>
+    {% if user.is_authenticated %}
+    <a href="{% url 'add_recipe' %}" class="btn btn-primary">
+      <i class="fas fa-plus"></i> Добавить рецепт
+    </a>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-primary">
+      <i class="fas fa-sign-in-alt"></i> Войти
+    </a>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+
+<style>
+  .page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text);
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+  }
+
+  .add-recipe-btn {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  /* Обновленные стили для фильтра категорий */
+  .category-filter {
+    margin: 1.5rem 0;
+    position: relative;
+    display: inline-block;
+    min-width: 250px;
+  }
+
+  .category-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 250px;
+  }
+
+  .category-toggle {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .category-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 250px;
+    background: var(--card-bg);
+    border: 1px solid var(--light-gray);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    z-index: 100;
+    display: none;
+    margin-top: 0.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .category-item {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .category-item:hover {
+    background: var(--primary-light);
+    color: var(--primary);
+  }
+
+  .category-item.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .recipe-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(125, 157, 202, 0.15);
+  }
+
+  .recipe-img-container {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+  }
+
+  .recipe-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .recipe-card:hover .recipe-img {
+    transform: scale(1.03);
+  }
+
+  .no-image {
+    width: 100%;
+    height: 100%;
+    background: var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .no-image i {
+    font-size: 2rem;
+    color: var(--text);
+    opacity: 0.3;
+  }
+
+  .recipe-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .recipe-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+
+  .recipe-description {
+    color: var(--text);
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+    flex-grow: 1;
+  }
+
+  .recipe-meta {
+    display: flex;
+    justify-content: space-between;
+    color: var(--text);
+    opacity: 0.7;
+    font-size: 0.85rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .recipe-btn {
+    display: block;
+    text-align: center;
+    padding: 0.75rem;
+    background: var(--primary);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+  }
+
+  .recipe-btn:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(139, 164, 217, 0.3);
+  }
+
+  .no-recipes {
+    text-align: center;
+    padding: 3rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .no-recipes-icon {
+    font-size: 5rem;
+    color: var(--light-gray);
+    margin-bottom: 1rem;
+  }
+
+  .no-recipes h3 {
+    color: var(--text);
+    margin-bottom: 1rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(139, 164, 217, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 1.8rem;
+      padding: 0.5rem 1rem;
+    }
+
+    .category-dropdown {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .category-menu {
+      width: 100%;
+      position: static;
+      display: block;
+      margin-top: 0.5rem;
+      max-height: none;
+      border: none;
+      box-shadow: none;
+    }
+
+    .category-toggle {
+      display: none;
+    }
+
+    .recipe-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .recipe-img-container {
+      height: 180px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .recipe-meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdown = document.querySelector('.category-dropdown');
+    const toggle = document.querySelector('.category-toggle');
+    const menu = document.querySelector('.category-menu');
+    
+    // Открытие/закрытие по клику
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    });
+    
+    // Закрытие при клике вне меню
+    document.addEventListener('click', function() {
+      menu.style.display = 'none';
+    });
+    
+    // Предотвращаем закрытие при клике внутри меню
+    menu.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+  });
+</script>
+{% endblock %}

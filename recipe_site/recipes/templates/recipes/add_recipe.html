@@ -1,0 +1,134 @@
+{% extends 'recipes/base.html' %}
+
+{% block content %}
+<style>
+  /* Стили для формы */
+  .add-recipe-form .form-control {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  
+  .add-recipe-form textarea.form-control {
+    min-height: 120px;
+  }
+  
+  /* Стиль для мульти-выбора категорий */
+  .add-recipe-form select[multiple] {
+    min-width: 300px;
+    height: auto;
+  }
+</style>
+
+<div class="container">
+  <div class="add-recipe-form">
+    <h1 style="text-align: center; margin-bottom: 2rem;">Добавить новый рецепт</h1>
+    
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      {% if form.errors %}
+      <div style="color: var(--danger); margin-bottom: 1.5rem;">
+        Пожалуйста, исправьте ошибки в форме.
+      </div>
+      {% endif %}
+      
+      <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Название рецепта</label>
+        <input type="text" 
+               id="{{ form.title.id_for_label }}" 
+               name="{{ form.title.name }}" 
+               class="form-control"
+               value="{{ form.title.value|default_if_none:'' }}">
+        {% if form.title.errors %}
+          <div class="error" style="color: var(--danger);">
+            {{ form.title.errors }}
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.description.id_for_label }}">Описание</label>
+        <textarea id="{{ form.description.id_for_label }}" 
+                  name="{{ form.description.name }}" 
+                  class="form-control"
+                  rows="4">{{ form.description.value|default_if_none:'' }}</textarea>
+        {% if form.description.errors %}
+          <div class="error" style="color: var(--danger);">
+            {{ form.description.errors }}
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.steps.id_for_label }}">Шаги приготовления</label>
+        <textarea id="{{ form.steps.id_for_label }}" 
+                 name="{{ form.steps.name }}" 
+                 class="form-control"
+                 rows="6">{{ form.steps.value|default_if_none:'' }}</textarea>
+        {% if form.steps.errors %}
+          <div class="error" style="color: var(--danger);">
+            {{ form.steps.errors }}
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.cooking_time.id_for_label }}">Время приготовления (минут)</label>
+        <input type="number" 
+               id="{{ form.cooking_time.id_for_label }}" 
+               name="{{ form.cooking_time.name }}" 
+               class="form-control"
+               value="{{ form.cooking_time.value|default_if_none:'' }}">
+        {% if form.cooking_time.errors %}
+          <div class="error" style="color: var(--danger);">
+            {{ form.cooking_time.errors }}
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.image.id_for_label }}">Изображение</label>
+        <input type="file" 
+               id="{{ form.image.id_for_label }}" 
+               name="{{ form.image.name }}" 
+               class="form-control">
+        {% if form.image.errors %}
+          <div class="error" style="color: var(--danger);">
+            {{ form.image.errors }}
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="form-group">
+        <label for="{{ form.categories.id_for_label }}">Категории</label>
+        <select id="{{ form.categories.id_for_label }}" 
+                name="{{ form.categories.name }}" 
+                class="form-control" 
+                multiple
+                style="min-width: 300px; height: auto;">
+          {% for choice in form.categories.field.choices %}
+            <option value="{{ choice.0 }}"
+                    {% if choice.0 in form.categories.value %}selected{% endif %}>
+              {{ choice.1 }}
+            </option>
+          {% endfor %}
+        </select>
+        {% if form.categories.errors %}
+          <div class="error" style="color: var(--danger);">
+            {{ form.categories.errors }}
+          </div>
+        {% endif %}
+      </div>
+      
+      <button type="submit" class="btn btn-success" style="margin-top: 1.5rem;">
+        <i class="fas fa-save"></i> Сохранить рецепт
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}
