@@ -58,9 +58,17 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
+
 4. Запустите сервер:
 ```bash
 python manage.py runserver
 ```
 
 Сайт будет доступен по адресу: http://127.0.0.1:8000
+
+
+## Контакты
+
+Автор проекта: [Мария]
+
+GitHub: @Maryshka228
