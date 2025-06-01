@@ -69,6 +69,6 @@ python manage.py runserver
 
 ## Контакты
 
-Автор проекта: [Мария]
+Автор проекта: *Мария*
 
 GitHub: @Maryshka228
